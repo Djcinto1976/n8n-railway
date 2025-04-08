@@ -1,9 +1,13 @@
 FROM n8nio/n8n
 
-# Instala o pacote MCP
+# Troca para o usuário root temporariamente
+USER root
+
+# Instala o pacote n8n-nodes-mcp globalmente
 RUN npm install -g n8n-nodes-mcp
 
+# Volta para o usuário padrão do n8n
+USER node
 
-COPY entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+
 
