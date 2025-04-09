@@ -1,16 +1,17 @@
 FROM n8nio/n8n
 
-# Troca para o usuário root temporariamente
+# Troca para usuário root para poder instalar pacotes globalmente
 USER root
 
-# Instala o pacote n8n-nodes-mcp globalmente
+# Instala o pacote n8n-nodes-mcp
 RUN npm install -g n8n-nodes-mcp
 
-RUN echo "app.set('trust proxy', 1);" >> /usr/local/lib/node_modules/n8n/dist/src/Server.js
+# Cria o diretório caso não exista e copia o arquivo Server.js
+RUN mkdir -p /usr/local/lib/node_modules/n8n/dist/src && \
+    cp /Server.js /usr/local/lib/node_modules/n8n/dist/src/
 
-# Volta para o usuário padrão do n8n
+# Volta ao usuário padrão do n8n
 USER node
-
 
 
 
