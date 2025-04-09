@@ -3,8 +3,11 @@ FROM n8nio/n8n
 # Troca para usuário root para poder instalar pacotes globalmente
 USER root
 
-# Instala o pacote n8n-nodes-mcp
-RUN npm install -g n8n-nodes-mcp
+# Limpa o cache do npm e instala o pacote n8n-nodes-mcp
+RUN npm cache clean --force && npm install -g n8n-nodes-mcp
+
+# Verifica se o pacote foi instalado corretamente
+RUN npm list -g n8n-nodes-mcp
 
 # Copia o arquivo Server.js local para dentro do container
 COPY Server.js /Server.js
@@ -15,8 +18,3 @@ RUN mkdir -p /usr/local/lib/node_modules/n8n/dist/src && \
 
 # Volta ao usuário padrão do n8n
 USER node
-
-
-
-
-
