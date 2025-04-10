@@ -1,4 +1,4 @@
-FROM n8nio/n8n
+FROM n8nio/n8n:1.88.0
 
 # Troca para usuário root para poder instalar pacotes globalmente
 USER root
