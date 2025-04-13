@@ -1,27 +1,22 @@
-# Usa a versão Debian da imagem oficial do n8n
-FROM n8nio/n8n:1.88.0-debian
+FROM node:18-slim
 
-# Habilita root para instalar Python e dependências nativas
-USER root
-
-# Atualiza pacotes e instala Python + dependências do PDF
+# Instala dependências
 RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    && apt-get clean
+    python3 python3-pip \
+    libxml2-dev libxslt1-dev zlib1g-dev \
+    curl gnupg gnupg2 ca-certificates
 
-# Diretório para o script Python
+# Instala versão fixa do n8n
+RUN npm install -g n8n@1.88.0
+
+# Diretório para o script
 WORKDIR /usr/local/mcp
-
-# Copia o script Python e o requirements.txt
 COPY ./mcp_extrator.py ./mcp_extrator.py
 COPY ./requirements.txt ./requirements.txt
 
-# Instala as dependências Python necessárias para extração de dados
+# Instala libs Python
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Retorna ao usuário padrão do n8n
-USER node
+EXPOSE 5678
+
+CMD ["n8n"]
