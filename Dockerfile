@@ -1,20 +1,19 @@
+# Usa a imagem oficial do n8n
 FROM n8nio/n8n:1.88.0
 
-# Troca para usuário root para poder instalar pacotes globalmente
+# Instala o Python e pacotes auxiliares como pip e build-essential
 USER root
+RUN apt-get update && apt-get install -y python3 python3-pip
 
-# Limpa o cache do npm e instala o pacote n8n-nodes-mcp
-RUN npm cache clean --force && npm install -g n8n-nodes-mcp
+# Cria uma pasta para seu script
+WORKDIR /usr/local/mcp
 
-# Verifica se o pacote foi instalado corretamente
-RUN npm list -g n8n-nodes-mcp
+# Copia o script e requisitos
+COPY ./mcp_extrator.py ./mcp_extrator.py
+COPY ./requirements.txt ./requirements.txt
 
-# Copia o arquivo Server.js local para dentro do container
-COPY Server.js /Server.js
+# Instala as dependências do Python
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Cria o diretório caso não exista e copia o arquivo Server.js para o local correto
-RUN mkdir -p /usr/local/lib/node_modules/n8n/dist/src && \
-    cp /Server.js /usr/local/lib/node_modules/n8n/dist/src/
-
-# Volta ao usuário padrão do n8n
+# Retorna o usuário original do n8n
 USER node
