@@ -13,11 +13,14 @@ WORKDIR /usr/local/mcp
 COPY ./mcp_extrator.py ./mcp_extrator.py
 COPY ./requirements.txt ./requirements.txt
 
-# ⚠️ Instala pacotes Python mesmo com PEP 668 ativado
+# Permite execução do script Python via STDIO
+RUN chmod +x /usr/local/mcp/mcp_extrator.py
+
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
 USER node
 
 EXPOSE 5678
 CMD ["n8n"]
+
 
