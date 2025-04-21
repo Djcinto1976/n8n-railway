@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev libxslt1-dev zlib1g-dev \
     curl gnupg gnupg2 ca-certificates
 
-RUN npm install -g n8n@1.88.0
+RUN npm install -g n8n@1.89.0
 
 WORKDIR /usr/local/mcp
 COPY ./mcp_extrator.py ./mcp_extrator.py
